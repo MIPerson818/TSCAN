@@ -13,7 +13,7 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import torch
 
-from utils import get_network
+from utils.utils import get_network
 from tqdm import tqdm
 import time
 

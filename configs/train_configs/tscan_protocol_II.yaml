@@ -1,0 +1,67 @@
+# 运行模式
+mode: "train"
+
+# 协议编号，仅用于标识实验
+protocol: "II"
+
+# 输出目录：保存模型、tensorboard、伪标签快照、ROC/DET 图
+save_path: "results/tscan/protocol_II_final_teacher_v1"
+
+# 源域 / 目标域根目录，脚本内部自动读取 cent_train / cent_test
+source_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Nature"
+target_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Flash"
+
+# 第一阶段 teacher 初始化得到的最优权重
+teacher_init_ckpt: "/home/workstation/Palm/PR_20241226_copy/results/train_one/final_teacher/model/adapt/teachers/teacher_best.pth"
+
+# DataLoader 与优化基本参数
+batch_size: 48
+num_workers: 8
+epochs: 100
+lr: 1e-4
+weight_decay: 0.0
+
+# ArcFace 头参数
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+
+# 消融开关：默认全部开启
+use_pseudo_labels: true
+use_domain_adversarial: true
+use_augmentation: true
+
+# 三项损失权重：源域监督 / 目标域伪标签 / 域对抗
+lambda_s: 1.0
+lambda_t: 0.6
+lambda_d: 0.3
+
+# 前几轮先弱化目标域伪标签损失，避免早期伪标签噪声过大
+target_warmup_epochs: 5
+# 伪标签损失从 0 增长到 lambda_t 的轮数
+target_ramp_epochs: 20
+# 域对抗损失从 0 增长到 lambda_d 的轮数
+domain_ramp_epochs: 10
+
+# 伪标签置信度阈值，可固定也可渐变
+# 若希望固定阈值，设 tau_start == tau_end
+tau_start: 0.60
+tau_end: 0.80
+tau_ramp_epochs: 20
+
+# EMA teacher 更新系数
+ema_decay: 0.99
+use_ema: true
+
+# GRL 系数与域判别器隐藏层维度
+grl_lambda: 1.0
+discriminator_hidden: 256
+
+# 第二阶段学习率调度器
+scheduler: "multistep"
+scheduler_milestones: [20, 50, 80]
+scheduler_gamma: 0.2
+
+# 保存策略：仅保存 latest / eer_best / acc_best
+# 每隔多少轮导出一次目标域伪标签快照 csv
+save_pseudo_every: 5

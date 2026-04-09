@@ -22,16 +22,17 @@ import gc
 from torch.utils.data import DataLoader
 # from torch.utils.tensorboard import SummaryWriter
 
-from conf import settings
-from utils import get_network, get_training_dataloader, get_test_dataloader, WarmUpLR, \
+from configs import settings
+from utils.utils import get_network, get_training_dataloader, get_test_dataloader, WarmUpLR, \
     most_recent_folder, most_recent_weights, last_epoch, best_acc_weights
-from loss import make_loss
-from utils import float_or_string, normalize
-from loss.AttentionConsistency import AttentionConsistency
-from loss.MMD import MMDLoss
-from loss.contrastive_loss import SupConLoss
-from loss.contrastive import ContrastiveLoss
-from loss.adv import AdversarialLoss
+from losses import make_loss
+from utils.utils import float_or_string, normalize
+from losses.AttentionConsistency import AttentionConsistency
+from losses.MMD import MMDLoss
+from losses.contrastive_loss import SupConLoss
+from losses.contrastive import ContrastiveLoss
+from losses.adv import AdversarialLoss
+
 
 
 def train(epoch):

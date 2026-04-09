@@ -7,7 +7,7 @@
 
 import torch
 from torch import nn
-from loss.common import euclidean_dist, cosine_dist
+from losses.common import euclidean_dist, cosine_dist
 import torch.nn.functional as F
 
 class MultiSimilarityLoss(nn.Module):

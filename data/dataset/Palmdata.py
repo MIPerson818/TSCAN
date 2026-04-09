@@ -3,6 +3,7 @@ from torchvision.datasets.folder import default_loader
 import os
 from os.path import join as ospj
 from tqdm import tqdm
+
 class Palmdata(Data.Dataset):
     """
     Palm dataset for person re-identification.
@@ -22,45 +23,45 @@ class Palmdata(Data.Dataset):
         elif split == 'test':
             self.imgs, self.labels = self.data_, self.labels_ #self.get_all_image(self.data_path, 0, self.class_number, self.label_1)
                    
-    # #@staticmethod
-    # def get_all_image(self, path, flag=1, class_number=0, label_1=0 ):
+    @staticmethod
+    def get_all_image(self, path, flag=1, class_number=0, label_1=0 ):
         
-    #     train_datas = []
-    #     train_lables = []
-    #     roi_path = path
-    #     i = label_1
-    #     class_list = []
-    #     img_num = []
-    #     for image_list in tqdm(roi_path):  
+        train_datas = []
+        train_lables = []
+        roi_path = path
+        i = label_1
+        class_list = []
+        img_num = []
+        for image_list in tqdm(roi_path):  
             
-    #         class_name = '_'.join(image_list.split('/')[:-1])
-    #         if class_name not in class_list:#如果该类还没有被加入，第一次加入该类
-    #             class_list.append(class_name)
-    #             i = i + 1
-    #             image_label = i-1
-    #             img_num.append(0)
-    #         else:
-    #             image_label = class_list.index(class_name) + label_1
-    #         #     train_lables.append(int(i-1))
-    #         if image_label < class_number: #86个人，选取训练集
-    #             img_num[image_label-label_1] = img_num[image_label-label_1] + 1
-    #             if flag == 1:
-    #                 # if image_label < 200: #86个人，选取训练集
-    #                 #     if img_num[image_label] < 6:
-    #                         train_lables.append(image_label)
-    #                         train_datas.append(image_list)
+            class_name = '_'.join(image_list.split('/')[:-1])
+            if class_name not in class_list:#如果该类还没有被加入，第一次加入该类
+                class_list.append(class_name)
+                i = i + 1
+                image_label = i-1
+                img_num.append(0)
+            else:
+                image_label = class_list.index(class_name) + label_1
+            #     train_lables.append(int(i-1))
+            if image_label < class_number: #86个人，选取训练集
+                img_num[image_label-label_1] = img_num[image_label-label_1] + 1
+                if flag == 1:
+                    # if image_label < 200: #86个人，选取训练集
+                    #     if img_num[image_label] < 6:
+                            train_lables.append(image_label)
+                            train_datas.append(image_list)
                             
-    #             if flag == 0:
-    #                 # if image_label >= 200 : #86个人，选取训练集
-    #                 #     if img_num[image_label] >= 6:
-    #                         train_lables.append(image_label)
-    #                         train_datas.append(image_list)
-    #                         # img_num[image_label] = img_num[image_label] + 1
+                if flag == 0:
+                    # if image_label >= 200 : #86个人，选取训练集
+                    #     if img_num[image_label] >= 6:
+                            train_lables.append(image_label)
+                            train_datas.append(image_list)
+                            # img_num[image_label] = img_num[image_label] + 1
         
-    #     print('====== image number',len(train_datas))
-    #     print('====== label number',len(train_lables))
+        print('====== image number',len(train_datas))
+        print('====== label number',len(train_lables))
                         
-    #     return train_datas, train_lables
+        return train_datas, train_lables
 
 
     def __getitem__(self, index):

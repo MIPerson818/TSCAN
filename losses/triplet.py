@@ -4,8 +4,8 @@ from torch.nn import functional as F
 
 import numbers
 
-from loss.common import euclidean_dist
-from loss.common import get_mask
+from losses.common import euclidean_dist
+from losses.common import get_mask
 
 from torch.autograd import Variable
 

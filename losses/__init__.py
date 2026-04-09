@@ -1,14 +1,16 @@
 from torch.nn import CrossEntropyLoss
-from loss.contrastive import ContrastiveLoss
-from loss.triplet import TripletLoss
-from loss.npair import NpairLoss
-from loss.lifted import LiftedLoss
-from loss.dmml import DMMLLoss
-from loss.multi_similarity_loss import MultiSimilarityLoss
-from loss.multi_dmml import multi_DMMLLoss
-from loss.arcface import ArcFaceLoss
-from loss.circle import SparseCircleLoss
-from loss.cosface import CosFaceLoss
+from losses.contrastive import ContrastiveLoss
+from losses.triplet import TripletLoss
+from losses.npair import NpairLoss
+from losses.lifted import LiftedLoss
+from losses.dmml import DMMLLoss
+from losses.multi_similarity_loss import MultiSimilarityLoss
+from losses.multi_dmml import multi_DMMLLoss
+from losses.arcface import ArcFaceLoss
+from losses.circle import SparseCircleLoss
+from losses.cosface import CosFaceLoss
+from losses.MMD import MMDLoss
+
 def make_loss(args, gids):
     """
     Construct loss function(s).

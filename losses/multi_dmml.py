@@ -4,7 +4,7 @@ from torch.nn import functional as F
 
 import numbers
 
-from loss.common import euclidean_dist, cosine_dist
+from losses.common import euclidean_dist, cosine_dist
 
 
 class multi_DMMLLoss(nn.Module):

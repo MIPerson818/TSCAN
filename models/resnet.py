@@ -138,6 +138,49 @@ class ResNet(nn.Module):
         # output = self.fc(output_feature)
 
         return output_feature
+    
+class ResNet_double(nn.Module):
+    def __init__(self, block, num_block):
+        super().__init__()
+        self.in_channels = 64
+
+        self.conv1 = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=3, padding=1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True)
+        )
+        self.conv2_x = self._make_layer(block, 64, num_block[0], 1)
+        self.conv3_x = self._make_layer(block, 128, num_block[1], 2)
+        self.conv4_x = self._make_layer(block, 256, num_block[2], 2)
+        self.conv5_x = self._make_layer(block, 512, num_block[3], 2)
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+
+        # 只保留最终 embedding 前的高层 pooled feature，供后续域判别器使用
+        self.feature_embedding1 = nn.Linear(512 * block.expansion, 128)
+        self.feature_embedding2 = nn.Linear(128 * block.expansion, 128)
+
+    def _make_layer(self, block, out_channels, num_blocks, stride):
+        strides = [stride] + [1] * (num_blocks - 1)
+        layers = []
+        for stride in strides:
+            layers.append(block(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels * block.expansion
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.conv2_x(x)
+        x = self.conv3_x(x)
+        x = self.conv4_x(x)
+        x = self.conv5_x(x)
+
+        pooled_feature = self.avg_pool(x)
+        pooled_feature = pooled_feature.view(pooled_feature.size(0), -1)
+
+        feature_embedding1 = self.feature_embedding1(pooled_feature)
+        feature_embedding2 = self.feature_embedding2(feature_embedding1)
+        return pooled_feature, feature_embedding2
+
 
 class resnet_model(nn.Module):
 

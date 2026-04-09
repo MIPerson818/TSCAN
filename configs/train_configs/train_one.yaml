@@ -1,0 +1,60 @@
+# 运行模式，目前只用 train
+mode: "train"
+
+# 实验输出目录：保存 log / tensorboard / teacher checkpoint
+save_path: 'results/train_one/exp017'
+
+# 源域根目录，脚本内部会自动读取 cent_train / cent_test
+source_path: 
+  - '/home/repository/PalmDatas/XJTUUP/HUAWEI/Nature'
+
+# 同结构 checkpoint 作为初始化；为空则从零开始
+init_ckpt: '/home/workstation/Palm/PR_20241226_copy/results_copy/DA_distill_V0.0.2/model/adapt/teachers/teacher_0_best.pth'
+
+# DataLoader 参数
+batch_size: 48
+num_workers: 8
+
+# 训练总轮数
+epochs: 200
+
+# RMSprop 对 backbone 的初始学习率
+lr: 1e-4
+
+# ArcFace 分类头学习率；默认可略高于 backbone
+metric_head_lr: 2e-4
+
+# ArcFace 缩放系数、角度间隔和 focal gamma；gamma=0 表示普通 ArcFace
+metric_scale: 48
+metric_margin: 0.3
+focal_gamma: 0.0
+
+# 学习率调度器
+scheduler: "multistep"
+# 在这些 epoch 结束后将 lr 乘以 scheduler_gamma
+scheduler_milestones: [40,80,120,160]
+scheduler_gamma: 0.2
+
+# 线性 warmup；warmup 期间学习率从 base_lr * warmup_start_factor 逐步升到 base_lr
+warmup_epochs: 3
+warmup_start_factor: 0.2
+
+# 正则项；先按历史有效配方关闭
+weight_decay: 1e-4
+
+# 验证集 EER 连续多少轮没有明显提升就提前停止；0 表示关闭
+early_stop_patience: 30
+# 只有 EER 改善超过该阈值，才认为是有效提升
+early_stop_min_delta: 1e-4
+
+# 每隔多少个 epoch 额外保存一次 teacher_epoch*.pth
+save_epoch: 20
+
+# 是否同时优化 ArcFace 分类头参数，用于验证当前 loss 平台是否由 metric head 未更新导致
+optimize_metric_head: true
+
+# 梯度裁剪；0 表示关闭
+grad_clip_norm: 5.0
+
+# 是否启用 AMP 混合精度；若怀疑 ArcFace 数值不稳定可先关掉做对照
+use_amp: true

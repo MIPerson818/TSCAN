@@ -12,7 +12,8 @@ from torch.optim.lr_scheduler import _LRScheduler
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-from data.Palmdata import Palmdata
+sys.path.insert(0,("/home/workstation/Palm/PR_20241226_copy"))
+from data.dataset.Palmdata import Palmdata
 
 def float_or_string(args):
     """
@@ -376,11 +377,11 @@ def compute_mean_std(palm_dataset):
         a tuple contains mean, std value of entire dataset
     """
 
-    data_r = numpy.dstack([palm_dataset[i][1][:, :, 0] for i in range(len(palm_dataset))])
-    data_g = numpy.dstack([palm_dataset[i][1][:, :, 1] for i in range(len(palm_dataset))])
-    data_b = numpy.dstack([palm_dataset[i][1][:, :, 2] for i in range(len(palm_dataset))])
-    mean = numpy.mean(data_r), numpy.mean(data_g), numpy.mean(data_b)
-    std = numpy.std(data_r), numpy.std(data_g), numpy.std(data_b)
+    data_r = np.dstack([palm_dataset[i][1][:, :, 0] for i in range(len(palm_dataset))])
+    data_g = np.dstack([palm_dataset[i][1][:, :, 1] for i in range(len(palm_dataset))])
+    data_b = np.dstack([palm_dataset[i][1][:, :, 2] for i in range(len(palm_dataset))])
+    mean = np.mean(data_r), np.mean(data_g), np.mean(data_b)
+    std = np.std(data_r), np.std(data_g), np.std(data_b)
 
     return mean, std
 
@@ -466,7 +467,7 @@ def normalize(x):
     return x
 
 if __name__ == '__main__':
-    data_path = ['/media/shaohuikai/public1/ALL_image/Device/RGB_ROI/ROI_H']
+    data_path = ['/home/repository/PalmDatas/XJTUUP/xjtu/HUAWEI/Nature']
     transform_test = transforms.Compose([
         transforms.Resize((112,112)),
         transforms.ToTensor(),
@@ -483,7 +484,7 @@ if __name__ == '__main__':
         #     class_number = 0
         # else:
         #     class_number = int(max(labels_)) + 1 #　类别数量
-    data1, labels1 = get_test_image(img_path, 10000, 10000)
+    data1, labels1 = get_test_image(img_path, 1000, 1000)
     data_ = data1
     labels_ = labels1
     img = Palmdata(path, transform_test, data_, labels_, split='test')

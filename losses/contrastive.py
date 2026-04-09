@@ -3,8 +3,8 @@ import torch.nn as nn
 
 import numbers
 
-from loss.common import euclidean_dist
-from loss.common import get_mask
+from losses.common import euclidean_dist
+from losses.common import get_mask
 
 class ContrastiveLoss(nn.Module):
     def __init__(self, margin=0.5, **kwargs):

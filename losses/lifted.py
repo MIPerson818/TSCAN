@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from loss.common import euclidean_dist
+from losses.common import euclidean_dist
 
 
 class LiftedLoss(nn.Module):

@@ -1,0 +1,9 @@
+source_path: '/home/repository/PalmDatas/XJTUUP/xjtu/HUAWEI/Nature'
+target_paths:
+  - '/home/repository/PalmDatas/XJTUUP/xjtu/iPhone/Nature'
+  - '/home/repository/PalmDatas/XJTUUP/xjtu/LG/Nature'
+  - '/home/repository/PalmDatas/XJTUUP/xjtu/MI8/Nature'
+batch_size: 24
+num_workers: 8
+epochs: 200
+lr: 1e-4
