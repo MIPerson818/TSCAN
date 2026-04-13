@@ -1,0 +1,92 @@
+title: "不同方法在四组协议下的 ROC 曲线对比"
+save_path: "results/contrast/plots"
+batch_size: 48
+num_workers: 8
+class_limit: 200
+num_classes: 150
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+xlim: [0.0, 0.1]
+ylim: [0.6, 1.0]
+protocols:
+  - id: "协议I"
+    title: "(a) 协议 I"
+    target_path: "/home/repository/PalmDatas/XJTUUP/iPhone/Nature"
+    methods:
+      - name: "MMD-ResNet"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/mmd/protocol_I/model/best_eer.pth"
+        color: "#2ca02c"
+        linestyle: "-."
+        linewidth: 2.0
+      - name: "DANN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/dann/protocol_I/model/best_eer.pth"
+        color: "#1f77b4"
+        linestyle: "--"
+        linewidth: 2.0
+      - name: "TSCAN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/tscan_new_train/protocol_I/model/teacher_ema_best_eer.pth"
+        color: "#d62728"
+        linestyle: "-"
+        linewidth: 2.4
+  - id: "协议II"
+    title: "(b) 协议 II"
+    target_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Flash"
+    methods:
+      - name: "MMD-ResNet"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/mmd/protocol_II/model/best_eer.pth"
+        color: "#2ca02c"
+        linestyle: "-."
+        linewidth: 2.0
+      - name: "DANN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/dann/protocol_II/model/best_eer.pth"
+        color: "#1f77b4"
+        linestyle: "--"
+        linewidth: 2.0
+      - name: "TSCAN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/tscan_new_train/protocol_II/model/teacher_ema_best_eer.pth"
+        color: "#d62728"
+        linestyle: "-"
+        linewidth: 2.4
+  - id: "协议III"
+    title: "(c) 协议 III"
+    target_path: "/home/repository/PalmDatas/XJTUUP/MI8/Flash"
+    xlim: [0.0, 0.04]
+    ylim: [0.8, 1.0]
+    methods:
+      - name: "MMD-ResNet"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/mmd/protocol_III/model/best_eer.pth"
+        color: "#2ca02c"
+        linestyle: "-."
+        linewidth: 2.0
+      - name: "DANN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/dann/protocol_III/model/best_eer.pth"
+        color: "#1f77b4"
+        linestyle: "--"
+        linewidth: 2.0
+      - name: "TSCAN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/tscan_new_train/protocol_III/model/teacher_ema_best_eer.pth"
+        color: "#d62728"
+        linestyle: "-"
+        linewidth: 2.4
+  - id: "协议IV"
+    title: "(d) 协议 IV"
+    target_path: "/home/repository/PalmDatas/XJTUUP/iPhone/Flash"
+    xlim: [0.0, 0.06]
+    ylim: [0.8, 1.0]
+    methods:
+      - name: "MMD-ResNet"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/mmd/protocol_IV/model/best_eer.pth"
+        color: "#2ca02c"
+        linestyle: "-."
+        linewidth: 2.0
+      - name: "DANN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/dann/protocol_IV/model/best_eer.pth"
+        color: "#1f77b4"
+        linestyle: "--"
+        linewidth: 2.0
+      - name: "TSCAN"
+        ckpt: "/home/workstation/Palm/PR_20241226_copy/results/tscan_new_train/protocol_IV/model/teacher_ema_best_eer.pth"
+        color: "#d62728"
+        linestyle: "-"
+        linewidth: 2.4
