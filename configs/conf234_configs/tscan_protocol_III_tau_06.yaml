@@ -1,0 +1,44 @@
+mode: "train"
+protocol: "III"
+save_path: "results/tscan_conf234/protocol_III_tau_06"
+
+source_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Nature"
+target_path: "/home/repository/PalmDatas/XJTUUP/MI8/Flash"
+teacher_init_ckpt: "/home/workstation/Palm/PR_20241226_copy/results/train_one/final_teacher/model/adapt/teachers/teacher_best.pth"
+
+batch_size: 48
+num_workers: 8
+epochs: 100
+lr: 1e-4
+weight_decay: 0.0
+
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+
+use_pseudo_labels: true
+use_domain_adversarial: true
+use_augmentation: true
+use_ema: true
+
+lambda_s: 1.0
+lambda_t: 0.6
+lambda_d: 0.3
+
+target_warmup_epochs: 5
+target_ramp_epochs: 20
+domain_ramp_epochs: 10
+
+tau_start: 0.6
+tau_end: 0.6
+tau_ramp_epochs: 50
+
+ema_decay: 0.99
+grl_lambda: 1.0
+discriminator_hidden: 256
+
+scheduler: "multistep"
+scheduler_milestones: [20, 50, 80]
+scheduler_gamma: 0.2
+
+save_pseudo_every: 5

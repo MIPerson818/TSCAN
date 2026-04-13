@@ -29,7 +29,10 @@ from tscan import (
     load_metric_head_checkpoint,
     remap_metric_head_weights_by_class_names,
     refresh_pseudo_labels,
+    sample_shared_identities,
+    save_identity_tsne_plot,
     save_pseudo_snapshot,
+    save_domain_tsne_plot,
     save_verification_plots,
 )
 
@@ -209,9 +212,42 @@ def main():
     best_student_target_acc = None
     metrics_path = os.path.join(opts.save_path, 'metrics.jsonl')
 
+    student_source_start_metrics, student_source_start_feats, student_source_start_labels = evaluate_model(student, loaders['source_test'], device)
+    student_target_start_metrics, student_target_start_feats, student_target_start_labels = evaluate_model(student, loaders['target_test'], device)
+    save_domain_tsne_plot(
+        student_source_start_feats,
+        student_target_start_feats,
+        os.path.join(plots_dir, 'student_domain_tsne_start.png'),
+        title='学生网络域分布 t-SNE（训练前）',
+    )
+    selected_identity_ids = sample_shared_identities(
+        student_source_start_labels,
+        student_target_start_labels,
+        num_identities=int(getattr(opts, 'tsne_num_identities', 10)),
+        random_state=int(getattr(opts, 'tsne_random_state', 42)),
+    )
+    save_identity_tsne_plot(
+        student_source_start_feats,
+        student_source_start_labels,
+        student_target_start_feats,
+        student_target_start_labels,
+        selected_identity_ids,
+        os.path.join(plots_dir, 'student_identity_tsne_start.png'),
+        title='学生网络身份 t-SNE（训练前）',
+        random_state=int(getattr(opts, 'tsne_random_state', 42)),
+    )
+    logging.info(
+        'Saved start t-SNE: '
+        f"student/source_eer={student_source_start_metrics['eer']:.4f}, "
+        f"student/target_eer={student_target_start_metrics['eer']:.4f}"
+    )
+    logging.info(f'Selected identity ids for identity t-SNE: {selected_identity_ids}')
+
     for epoch in tqdm(range(int(opts.epochs)), desc='TSCAN'):
         tau_progress = min(1.0, epoch / max(1, int(getattr(opts, 'tau_ramp_epochs', 1))))
-        tau = max(float(opts.tau_end), float(opts.tau_start) - (float(opts.tau_start) - float(opts.tau_end)) * tau_progress)
+        tau_start = float(opts.tau_start)
+        tau_end = float(opts.tau_end)
+        tau = tau_start + (tau_end - tau_start) * tau_progress
         use_pseudo_labels = bool(getattr(opts, 'use_pseudo_labels', True))
         use_domain_adversarial = bool(getattr(opts, 'use_domain_adversarial', True))
 
@@ -424,6 +460,30 @@ def main():
                 'epoch': epoch,
             }
             save_checkpoint(os.path.join(model_dir, 'student_best_acc.pth'), epoch, student, student_target_summary)
+
+    student_source_end_metrics, student_source_end_feats, student_source_end_labels = evaluate_model(student, loaders['source_test'], device)
+    student_target_end_metrics, student_target_end_feats, student_target_end_labels = evaluate_model(student, loaders['target_test'], device)
+    save_domain_tsne_plot(
+        student_source_end_feats,
+        student_target_end_feats,
+        os.path.join(plots_dir, 'student_domain_tsne_end.png'),
+        title='学生网络域分布 t-SNE（训练后）',
+    )
+    save_identity_tsne_plot(
+        student_source_end_feats,
+        student_source_end_labels,
+        student_target_end_feats,
+        student_target_end_labels,
+        selected_identity_ids,
+        os.path.join(plots_dir, 'student_identity_tsne_end.png'),
+        title='学生网络身份 t-SNE（训练后）',
+        random_state=int(getattr(opts, 'tsne_random_state', 42)),
+    )
+    logging.info(
+        'Saved end t-SNE: '
+        f"student/source_eer={student_source_end_metrics['eer']:.4f}, "
+        f"student/target_eer={student_target_end_metrics['eer']:.4f}"
+    )
 
     writer.close()
 

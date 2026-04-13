@@ -1,0 +1,16 @@
+title: "协议 II 不同方法 ROC 曲线对比"
+save_path: "results/contrast/roc/protocol_II"
+target_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Flash"
+batch_size: 48
+num_workers: 8
+num_classes: 150
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+methods:
+  - name: "MMD-ResNet"
+    ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/mmd/protocol_II/model/best_eer.pth"
+  - name: "DANN"
+    ckpt: "/home/workstation/Palm/PR_20241226_copy/results/contrast/dann/protocol_II/model/best_eer.pth"
+  - name: "TSCAN"
+    ckpt: "/home/workstation/Palm/PR_20241226_copy/results/tscan_new_train/protocol_II/model/teacher_ema_best_eer.pth"

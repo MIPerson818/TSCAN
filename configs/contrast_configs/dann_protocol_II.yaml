@@ -1,0 +1,23 @@
+protocol: "II"
+save_path: "results/contrast/dann/protocol_II"
+source_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Nature"
+target_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Flash"
+teacher_init_ckpt: "/home/workstation/Palm/PR_20241226_copy/results/train_one/final_teacher/model/adapt/teachers/teacher_best.pth"
+batch_size: 36
+num_workers: 8
+epochs: 80
+lr: 1e-4
+weight_decay: 1e-4
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+use_augmentation: true
+lambda_s: 1.0
+lambda_d: 0.1
+domain_ramp_epochs: 20
+grl_lambda: 1.0
+discriminator_hidden: 256
+scheduler: "multistep"
+scheduler_milestones: [40, 70, 90]
+scheduler_gamma: 0.5
+early_stop_patience: 10

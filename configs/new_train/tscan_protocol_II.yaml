@@ -1,0 +1,63 @@
+# 运行模式
+mode: "train"
+
+# 协议编号，仅用于标识实验
+protocol: "II"
+
+# 输出目录：保存模型、tensorboard、伪标签快照、ROC/DET 图
+save_path: "results/tscan_new_train/protocol_II"
+
+# 源域 / 目标域根目录，脚本内部自动读取 cent_train / cent_test
+source_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Nature"
+target_path: "/home/repository/PalmDatas/XJTUUP/HUAWEI/Flash"
+
+# 第一阶段 teacher 初始化得到的最优权重
+teacher_init_ckpt: "/home/workstation/Palm/PR_20241226_copy/results/train_one/final_teacher/model/adapt/teachers/teacher_best.pth"
+
+# DataLoader 与优化基本参数
+batch_size: 48
+num_workers: 8
+epochs: 100
+lr: 1e-4
+weight_decay: 0.0
+
+# ArcFace 头参数
+metric_scale: 64
+metric_margin: 0.5
+metric_gamma: 2
+
+# 开关
+use_pseudo_labels: true
+use_domain_adversarial: true
+use_augmentation: true
+use_ema: true
+
+# 三项损失权重
+lambda_s: 1.0
+lambda_t: 0.4
+lambda_d: 0.1
+
+# 损失引入节奏
+target_warmup_epochs: 5
+target_ramp_epochs: 20
+domain_ramp_epochs: 10
+
+# 置信度阈值策略
+tau_start: 0.5
+tau_end: 0.75
+tau_ramp_epochs: 50
+
+# EMA teacher 更新系数
+ema_decay: 0.99
+
+# GRL 系数与域判别器隐藏层维度
+grl_lambda: 1.0
+discriminator_hidden: 256
+
+# 第二阶段学习率调度器
+scheduler: "multistep"
+scheduler_milestones: [20, 50, 80]
+scheduler_gamma: 0.2
+
+# 保存伪标签快照
+save_pseudo_every: 5
